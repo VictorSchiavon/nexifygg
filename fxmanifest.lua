@@ -1,21 +1,26 @@
 fx_version 'cerulean'
 game 'gta5'
-name 'nexify'
-author 'Koytz'
+lua54 'yes'
+
+name 'nexify-loja'
+description 'Loja da Nexify aberta dentro do jogo'
+author 'Nexify'
 version '1.0.0'
 
-server_scripts {
-    --"@vrp/lib/Utils.lua",         -- ⚠️ Remova os traços se sua framework for Creative
-    --"@vrp/lib/utils.lua",         -- ⚠️ Remova os traços se sua framework for vRP
+shared_script 'config.lua'
+client_script 'client.lua'
 
-    'main.js',
-    'server/main.lua',
-    'server/handlers.lua',
-    'server/frameworks/*.lua',
-    'server/config.lua'
+-- adaptadores.lua vem antes: e ele quem sabe achar a base do servidor.
+server_scripts {
+    'adaptadores.lua',
+    'server.lua',
+    'entrega.lua'
 }
 
-dependencies {
-    '/server:7290',
-    '/onesync',
+ui_page 'ui/index.html'
+
+files {
+    'ui/index.html',
+    'ui/style.css',
+    'ui/app.js'
 }

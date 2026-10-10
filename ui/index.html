@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Loja</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="janela" class="janela escondido" role="dialog" aria-label="Loja do servidor">
+    <header class="topo">
+      <div class="identidade">
+        <span class="marca" id="inicial">N</span>
+        <div>
+          <h1 id="nome-da-loja">Loja</h1>
+          <p id="endereco-da-loja"></p>
+        </div>
+      </div>
+      <div class="acoes-topo">
+        <button type="button" id="ver-carrinho" class="botao-carrinho">
+          Carrinho <span id="contador">0</span>
+        </button>
+        <button type="button" id="fechar" class="botao-fechar" aria-label="Fechar">ESC</button>
+      </div>
+    </header>
+
+    <div class="corpo">
+      <nav class="categorias" id="categorias" aria-label="Categorias"></nav>
+
+      <main class="vitrine" id="vitrine"></main>
+
+      <aside class="carrinho" id="carrinho">
+        <h2>Seu carrinho</h2>
+        <ul id="itens-do-carrinho"></ul>
+        <p class="vazio" id="carrinho-vazio">Nada aqui ainda. Escolha um produto ao lado.</p>
+        <div class="cupom">
+          <input type="text" id="cupom" placeholder="Cupom (opcional)" autocomplete="off" />
+        </div>
+        <div class="total">
+          <span>Total</span>
+          <strong id="total">R$ 0,00</strong>
+        </div>
+        <button type="button" id="comprar" class="botao-comprar" disabled>Finalizar compra</button>
+        <p class="aviso" id="aviso"></p>
+      </aside>
+    </div>
+  </div>
+
+  <div id="pagamento" class="pagamento escondido" role="dialog" aria-label="Pagamento">
+    <div class="cartao-pagamento">
+      <h2 id="titulo-pagamento">Pague pelo celular</h2>
+      <p id="texto-pagamento">Aponte a câmera do seu celular para o código abaixo. Você não precisa sair do jogo.</p>
+      <img id="qr" alt="Código para pagar no celular" />
+      <p class="link" id="link-pagamento"></p>
+      <div class="situacao" id="situacao">
+        <span class="bolinha"></span>
+        <span id="texto-situacao">Aguardando o pagamento…</span>
+      </div>
+      <button type="button" id="voltar" class="botao-voltar">Voltar para a loja</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
