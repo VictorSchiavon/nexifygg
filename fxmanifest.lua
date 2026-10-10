@@ -10,9 +10,12 @@ version '1.0.0'
 shared_script 'config.lua'
 client_script 'client.lua'
 
--- adaptadores.lua vem antes: e ele quem sabe achar a base do servidor.
+-- Ordem importa: adaptadores.lua sabe achar a base (Nexify.Identificar) e o
+-- entregas.lua registra o que fazer com cada compra -- ambos antes do
+-- entrega.lua, que e quem dispara as entregas.
 server_scripts {
     'adaptadores.lua',
+    'entregas.lua',
     'server.lua',
     'entrega.lua'
 }

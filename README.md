@@ -22,9 +22,9 @@ Só isso. A base do seu servidor é reconhecida sozinha.
 Este resource faz duas coisas, e cada uma liga ou desliga sozinha:
 
 - **Entrega** (`entregarNesteServidor`) — executa as compras aprovadas,
-  venham do site ou do jogo. É a mesma fila e os mesmos eventos
-  `fivemarket:*` do resource oficial: os handlers do seu `server/config.lua`
-  continuam valendo sem mudar nada.
+  venham do site ou do jogo. O que fazer com cada compra (dinheiro, item,
+  VIP, veículo) fica no **`entregas.lua`**, já pronto para ESX, QBCore e Qbox
+  e editável para o resto.
 - **Loja no jogo** (`lojaNoJogo`) — o `/loja`, a janela e o QR.
 
 Quem quer só vender pelo site desliga a segunda. Quem já usa o resource
@@ -106,19 +106,26 @@ Se o servidor cair no meio, **o pedido volta para a fila** — a confirmação �
 o último passo justamente para isso. Melhor entregar de novo do que dar por
 entregue algo que não saiu.
 
-Os handlers ficam no seu `server/config.lua`, como sempre. Cada evento
-recebe `(comprador, argumento, referência do pedido)`:
+### O `entregas.lua` — o que fazer com cada compra
 
-```lua
-AddEventHandler('fivemarket:addMoney', function(comprador, valor)
-    -- comprador aqui é o passaporte, o citizenid ou o identifier,
-    -- conforme a base do seu servidor
-end)
-```
+Quem transforma a compra em dinheiro, item, VIP ou veículo é o **`entregas.lua`**,
+o único arquivo de lógica aberto do resource (os outros vêm ofuscados). Ele já
+vem pronto para:
 
-Se o evento não existir na sua base, a compra é aprovada e **nada acontece**,
-sem erro — o FiveM ignora `TriggerEvent` de evento que ninguém escuta. Por
+- **ESX, QBCore e Qbox** — dinheiro, item e veículo funcionam sem você mexer.
+- **Standalone** (sem framework) — dispara `nexify:standalone:*` para você
+  tratar do seu jeito.
+- **vRP / Creative** — os blocos estão lá; como o resource não carrega a lib
+  da vRP de propósito, preencha o `AjusteManual (vRP)` no topo do `entregas.lua`.
+- **VIP/grupo, casa e remoções** — deixados como ponto de partida: onde
+  estiver escrito `PREENCHA`, coloque a função da sua base.
+
+Cada execução é protegida: se a API da sua base recusar, a compra fica
+registrada no console como "não entregue" em vez de derrubar o resource. Por
 isso vale deixar `mostrarEntregaNoConsole` ligado até a primeira venda.
+
+A confirmação com a Nexify é automática: você só executa a entrega; não
+precisa avisar a Nexify de nada.
 
 ## Como funciona a compra
 
@@ -145,8 +152,9 @@ Produto gratuito não gera QR: sai entregue na hora.
 - `nexifyid` só responde no console do servidor ou para quem tem a permissão
   ACE `nexify.loja`.
 - `server.lua`, `entrega.lua` e `adaptadores.lua` vêm **ofuscados** — não
-  precisa (nem dá pra) editá-los. Tudo o que você ajusta fica no `config.lua`,
-  que é aberto. Não altere os arquivos ofuscados: o resource para de funcionar.
+  precisa editá-los. O que você ajusta fica no `config.lua` (token e opções) e
+  no `entregas.lua` (lógica de entrega). Não altere os arquivos ofuscados: o
+  resource para de funcionar.
 
 ## Problemas comuns
 
@@ -156,6 +164,7 @@ Produto gratuito não gera QR: sai entregue na hora.
 | "Token da loja inválido" | Token errado ou trocado no painel |
 | "Esta loja ainda não tem forma de pagamento configurada" | Configure Mercado Pago, PicPay, Stripe ou PayPal no painel |
 | "Não conseguimos identificar você no servidor" | Rode `nexifyid` e preencha o AJUSTE MANUAL em `config.lua` |
+| Compra aprovada mas nada chega ao jogador | Abra o `entregas.lua`: veja o log no console e preencha a lógica da sua base onde diz `PREENCHA` |
 | A loja abre vazia | Os produtos estão ocultos no painel; publique-os |
 
 Os arquivos `.lua` são gravados sem acento de propósito: FiveM lê o console
